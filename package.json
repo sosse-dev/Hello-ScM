@@ -24,7 +24,7 @@
     "clsx": "^2.1.1",
     "generate-password": "^1.7.1",
     "lucide-react": "^0.376.0",
-    "next": "13.5.4",
+    "next": "^14.2.3",
     "next-auth": "^4.24.5",
     "next-themes": "^0.3.0",
     "query-string": "^9.0.0",
