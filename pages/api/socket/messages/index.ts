@@ -1,6 +1,6 @@
 import { NextApiRequest } from "next";
 import { NextApiResponseServerIo } from "@/types";
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(
   req: NextApiRequest,
@@ -54,7 +54,7 @@ export default async function handler(
     });
 
     if (!postedMessage) {
-      console.log("Coulnot create the message");
+      return res.status(404).json({ message: "Something went wrong!" });
     }
 
     const messageKey = `chat:${messageId}:messages`;
@@ -63,7 +63,6 @@ export default async function handler(
 
     return res.status(200).json(postedMessage);
   } catch (err) {
-    console.log("[MESSAGE_POST]", err);
     return res.status(500).json({ message: "Internal Error" });
   }
 }

@@ -1,4 +1,4 @@
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -38,7 +38,6 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ data });
   } catch (err) {
-    console.log(err);
     return NextResponse.json({ error: "Internal Error", status: 500 });
   }
 }

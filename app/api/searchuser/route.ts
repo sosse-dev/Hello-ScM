@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma"
 
 const AMOUNT_OF_USERS_TAKEN = 30;
 
@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     const searchInput = searchParams.get("searchInput");
     const cursor = searchParams.get("cursor");
 
-    let data: any = [];
+    let data = [];
 
     if (cursor) {
       data = 

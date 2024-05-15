@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma"
 import getSession from "@/app/actions/getSession";
 
 const AMOUNT_OF_POST_TAKEN: number = 5;

@@ -1,4 +1,5 @@
 "use client";
+import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -7,24 +8,9 @@ function BackButton() {
   return (
     <button
       onClick={() => router.back()}
-      className="absolute left-0 h-full w-[5rem] bg-red-600 text-white p-5"
+      className="absolute left-0 h-full w-[5rem] bg-red-600 hover:bg-red-700 text-white grid place-items-center"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-label="back"
-        className="lucide lucide-arrow-left w-full h-full"
-      >
-        <path d="m12 19-7-7 7-7" />
-        <path d="M19 12H5" />
-      </svg>
+      <ArrowLeft size={30} />
     </button>
   );
 }

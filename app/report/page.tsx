@@ -5,7 +5,6 @@ import BackButton from "@/components/button/BackButton";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseCheckConnection } from "@/hooks/UseCheckConnection";
-import OfflinePage from "@/components/OfflinePage";
 import { useRouter } from "next/navigation";
 
 const reportSchema = z.object({
@@ -14,7 +13,6 @@ const reportSchema = z.object({
 });
 
 function Report() {
-  const [isOnline] = UseCheckConnection();
   const router = useRouter();
   const form = useForm<z.infer<typeof reportSchema>>({
     resolver: zodResolver(reportSchema),
@@ -42,18 +40,16 @@ function Report() {
     }
   };
 
-  if (!isOnline) {
-    return <OfflinePage />;
-  }
+  
 
   return (
     <>
-      <div className="relative top-0 w-full h-20 shrink-0 border-b-2 border-slate-500 flex">
+      <div className="relative top-0 w-full h-[4rem] shrink-0 border-b-2 border-slate-500 flex">
         <BackButton />
       </div>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full h-fit flex flex-col items-center py-12 overflow-y-auto"
+        className="w-full h-fit flex flex-col items-center py-12 overflow-y-auto pb-[8rem]"
       >
         <div className="w-full h-fit flex flex-col justify-center items-center">
           <h1 className="text-5xl">Report Page</h1>

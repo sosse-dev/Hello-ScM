@@ -5,8 +5,7 @@ import { UseChatQuery } from "@/hooks/UseChatQuery";
 import { ElementRef, Fragment, useRef } from "react";
 import { UseChatScroll } from "@/hooks/UseChatScroll";
 import { usePathname } from "next/navigation";
-import ViewLoader from "@/libs/ViewLoader";
-import OfflinePage from "../OfflinePage";
+import ViewLoader from "@/lib/ViewLoader";
 import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 
 interface ChatMessagesProps {
@@ -19,7 +18,6 @@ export const ChatMessages = ({ apiUrl, userId }: ChatMessagesProps) => {
   const messageId = pathname?.slice(14, pathname?.length);
   const queryKey = `chat:${messageId}`;
   const addKey = `chat:${messageId}:messages`;
-  const [isOnline] = UseCheckConnection();
 
   const containerChatRef = useRef<ElementRef<"div">>(null);
   const bottomRef = useRef<ElementRef<"div">>(null);
@@ -37,17 +35,13 @@ export const ChatMessages = ({ apiUrl, userId }: ChatMessagesProps) => {
     count: data?.pages?.[0]?.chats?.length ?? 0,
   });
 
-  if (!isOnline) {
-    return <OfflinePage />;
-  }
-
   return (
     <div
       ref={containerChatRef}
-      className="grow flex flex-col-reverse gap-y-3 px-8 pt-4 pb-56 bg-slate-200 overflow-y-auto hide-scrollbar hide-scrollbar::-webkit-scrollbar"
+      className="grow flex flex-col-reverse gap-y-3 px-8 pt-4 pb-[3.5rem] bg-slate-50 overflow-y-auto hide-scrollbar hide-scrollbar::-webkit-scrollbar"
     >
       <div ref={bottomRef} />
-      {data?.pages?.map((data: any, i: number) => (
+      {data?.pages?.map((data, i: number) => (
         <Fragment key={i}>
           {data.chats.map((message: any, i: number) => (
             <div

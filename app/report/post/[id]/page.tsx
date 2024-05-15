@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import Link from "next/link";
-import OfflinePage from "@/components/OfflinePage";
 import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 
 const reportPostSchema = z.object({
@@ -18,7 +17,6 @@ const reportPostSchema = z.object({
 export default function ReportPost() {
   const pathname = usePathname();
   const [sended, setSended] = useState(false);
-  const [isOnline] = UseCheckConnection();
 
   const checkPost = async () => {
     try {
@@ -27,7 +25,6 @@ export default function ReportPost() {
       );
 
       if (!res.ok) {
-        console.log("bad fetch response");
         return { response: "NOT FOUND" };
       }
 
@@ -120,10 +117,6 @@ export default function ReportPost() {
         </Link>
       </div>
     );
-  }
-
-  if (!isOnline) {
-    return <OfflinePage />;
   }
 
   return (

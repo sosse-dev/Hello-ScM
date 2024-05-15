@@ -5,11 +5,10 @@ import Image from "next/image";
 import { ElementRef, useEffect, useRef } from "react";
 import CommentInput from "./CommentInput";
 import { Comment, User } from "@prisma/client";
-import ErrorPage from "../ErrorPage";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import OfflinePage from "../OfflinePage";
+import { Loader } from "lucide-react";
+import Loading from "../loader/Loading";
 
 type CommentWithUserProfile = Comment & {
   user: User;
@@ -23,7 +22,7 @@ interface CommentsProps {
 function Comments({ apiUrl, userId }: CommentsProps) {
   const { status, data: session } = useSession();
   const pathname = usePathname();
-  const [isOnline] = UseCheckConnection();
+
   const postId = pathname?.slice(14, pathname.length);
   const router = useRouter();
   const { data, isLoading, isError, refetch } = UseComment({
@@ -38,16 +37,12 @@ function Comments({ apiUrl, userId }: CommentsProps) {
   }, [data]);
 
   const handleDelete = async (commentId: string) => {
-    if (!isOnline) {
-      return null;
-    }
-
     const res = await fetch(`${apiUrl}/${commentId}`, {
       method: "DELETE",
     });
 
     if (!res.ok) {
-      console.log("bad fetch response");
+      return
     }
 
     refetch();
@@ -56,14 +51,6 @@ function Comments({ apiUrl, userId }: CommentsProps) {
   if (!session?.user.username && status === "authenticated") {
     router.push("/profile/add-profile");
     return null;
-  }
-
-  if (isError) {
-    return <ErrorPage />;
-  }
-
-  if(!isOnline) {
-    return <OfflinePage />
   }
 
   return (
@@ -136,25 +123,7 @@ function Comments({ apiUrl, userId }: CommentsProps) {
           );
         })}
         <div ref={bottomRef} className=""></div>
-        {isLoading && (
-          <div className="w-12 h-12 animate-spin m-auto">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-label="loader"
-              className="lucide lucide-loader-2 w-full h-full"
-            >
-              <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-            </svg>
-          </div>
-        )}
+        {isLoading && <Loading />}
       </div>
       <CommentInput
         apiUrl="/api/comment/send"

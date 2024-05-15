@@ -1,24 +1,9 @@
 import getSession from "@/app/actions/getSession";
 import BackButton from "@/components/button/BackButton";
 import Comments from "@/components/comment/Comments";
-import Link from "next/link";
 
 async function Commentars() {
   const session = await getSession();
-
-  if (!session) {
-    return (
-      <div className="m-auto flex flex-col items-center space-y-2">
-        <h1 className="text-3xl font-bold">You haven{"'"}t signed up yet</h1>
-        <Link
-          href="/profile"
-          className="w-fit h-fit px-3 py-2 bg-green-600 text-white rounded-md"
-        >
-          Sign Up
-        </Link>
-      </div>
-    );
-  }
 
   return (
     <>

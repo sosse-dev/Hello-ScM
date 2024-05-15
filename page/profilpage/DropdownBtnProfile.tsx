@@ -1,5 +1,6 @@
 "use client";
 
+import { X } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -10,7 +11,7 @@ function DropdownBtnProfile() {
     <>
       <button
         onClick={() => setOpenDp(!openDp)}
-        className="absolute right-3 h-fit w-[4rem] px-4 grid place-items-center"
+        className="h-fit w-[4rem] px-4 grid place-items-center"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -31,10 +32,17 @@ function DropdownBtnProfile() {
         </svg>
       </button>
       <div
-        className={`absolute top-24 h-screen px-8 w-full bg-slate-50 flex flex-col gap-y-3 py-4 ${
+      style={{top: 0, zIndex: 51}}
+        className={`fixed left-0 h-screen w-full bg-slate-50 flex flex-col gap-y-3 py-4 ${
           openDp ? "block" : "hidden"
         }`}
       >
+        <button
+        onClick={() => setOpenDp(!openDp)}
+        className="h-[3rem] w-full flex justify-end pr-8 pt-2"
+      >
+        <X size={30} className="bg-red-700 text-white rounded-full" />
+      </button>
         <Link
           href="/profile/edit-profile"
           className="h-20 grid place-items-center text-2xl hover:bg-slate-200"
@@ -54,7 +62,7 @@ function DropdownBtnProfile() {
           Report
         </Link>
         <button
-          onClick={() => signOut()}
+          onClick={() => signOut({callbackUrl: "/login"})}
           className="h-20 grid place-items-center text-2xl hover:bg-slate-200 text-red-600"
         >
           Sign Out

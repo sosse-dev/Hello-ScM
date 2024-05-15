@@ -38,9 +38,9 @@ function ChatProfileUser({ sessionId }: { sessionId: string }) {
   return (
     <Link
       href={`/${username}`}
-      className="absolute right-4 w-fit h-full flex items-center gap-x-2"
+      className="absolute right-0 pl-2 pr-4 w-fit h-full flex items-center gap-x-1 bg-slate-700 hover:bg-slate-800 text-white"
     >
-      <div className="w-14 h-14 rounded-full overflow-hidden grid place-items-center">
+      <div className="w-14 h-14 grid place-items-center">
         <Image
           src={
             data?.data?.sender?.image
@@ -49,11 +49,10 @@ function ChatProfileUser({ sessionId }: { sessionId: string }) {
           }
           width={50}
           height={50}
-          className="object-fill"
+          className="object-fill rounded-full"
           alt="profile-picture"
         />
       </div>
-      {isLoading && <p>WAIT</p>}
       <div className="h-fit flex flex-col -space-y-1">
         <h1 className="text-xl font-semibold">
           {name?.length > 12 ? name?.slice(0, 12) : name}

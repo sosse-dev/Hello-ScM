@@ -33,7 +33,7 @@ export default function ViewLoader({
     if (hasNextPage) {
       fetchNextPage();
     }
-  }, [visible]);
+  }, [visible, hasNextPage, fetchNextPage]);
 
   return (
     <div id="div" className={`${page === "SEARCH" ? "pb-0" : "pb-24"}`}></div>

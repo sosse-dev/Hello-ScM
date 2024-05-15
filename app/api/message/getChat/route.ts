@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { DirectMessage } from "@prisma/client";
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma"
 
 const AMOUNT_OF_MESSAGES_TAKEN = 10;
 

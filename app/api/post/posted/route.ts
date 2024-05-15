@@ -1,4 +1,4 @@
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server";
 
 const AMOUNT_OF_POST_TAKEN = 6;

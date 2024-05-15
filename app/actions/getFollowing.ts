@@ -1,11 +1,10 @@
 import getSession from "./getSession";
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma"
 
 export default async function getFollowing() {
   const session = await getSession();
   try {
     if (!session) {
-      console.log("no session");
       return null;
     }
 

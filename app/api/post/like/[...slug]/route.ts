@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(
   req: Request,
@@ -43,8 +43,6 @@ export async function POST(
     const liked = await prisma.like.create({
       data: { userId: params.slug[0], postId: params.slug[1] },
     });
-
-    console.log(liked)
 
     const likes = await prisma.like.findMany({
       where: { postId: params.slug[1] },

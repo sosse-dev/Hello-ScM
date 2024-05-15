@@ -1,5 +1,4 @@
 "use client";
-import OfflinePage from "@/components/OfflinePage";
 import BackButton from "@/components/button/BackButton";
 import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +17,6 @@ const reportUserSchema = z.object({
 export default function ReportUser() {
   const pathname = usePathname();
   const [sended, setSended] = useState(false);
-  const [isOnline] = UseCheckConnection();
 
   const checkUser = async () => {
     try {
@@ -27,7 +25,6 @@ export default function ReportUser() {
       );
 
       if (!res.ok) {
-        console.log("bad fetch response");
         return { response: "NOT FOUND" };
       }
 
@@ -124,10 +121,6 @@ export default function ReportUser() {
         </Link>
       </div>
     );
-  }
-
-  if (!isOnline) {
-    return <OfflinePage />;
   }
 
   return (

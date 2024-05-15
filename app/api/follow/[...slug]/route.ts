@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma";
 import getUserId from "@/app/actions/getUserId";
 
 export async function POST(
@@ -49,9 +49,7 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
-    console.log(params.slug[0]);
     const userId = await getUserId(params.slug[0] as string);
-    // const AMOUNT_OF_DATA_TAKEN = (params.slug[1] as number) ?? 100;
 
     const { searchParams } = new URL(req.url);
     const cursor1 = searchParams.get("cursor1");

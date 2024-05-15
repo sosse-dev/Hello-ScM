@@ -1,4 +1,4 @@
-import prisma from "@/libs/prisma";
+import { prisma } from "@/lib/prisma"
 import getSession from "./getSession";
 
 export default async function getMessage() {

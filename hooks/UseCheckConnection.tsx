@@ -12,8 +12,6 @@ export function UseCheckConnection() {
 
       window.addEventListener("online", handleStatusOnline);
       window.addEventListener("offline", handleStatusOnline);
-      console.log("check", isOnline);
-
       return () => {
         window.removeEventListener("online", handleStatusOnline);
         window.removeEventListener("offline", handleStatusOnline);

@@ -1,194 +1,206 @@
 "use client";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
+import { getUserByUsername } from "@/app/actions/getUserByUsername";
+import FormError from "@/components/infoForm/FormError";
+import FormSuccess from "@/components/infoForm/FormSuccess";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import FileUpload from "@/components/uploadthing/fileUpload";
+import { AddUserSchema } from "@/types/schemaZod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-const addProfileSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Name is Empty")
-    .max(17, "Maximum length of this name is 17 characters"),
-  username: z
-    .string()
-    .min(1, "Username is Empty")
-    .max(15, "Maximum length of username is 15 characters"),
-  desc: z.string().optional(),
-});
-
-export default function AddProfile() {
-  const { status, data: session, update } = useSession();
+function AddProfile() {
+  const { data: session, update } = useSession();
   const router = useRouter();
-  const [doesUsernameExist, setDoesUsernameExist] = useState(false);
-  const [isOnline] = UseCheckConnection();
-
-  const form = useForm<z.infer<typeof addProfileSchema>>({
-    resolver: zodResolver(addProfileSchema),
+  const form = useForm<z.infer<typeof AddUserSchema>>({
+    resolver: zodResolver(AddUserSchema),
     defaultValues: {
-      name: session?.user.name as string,
-      username: session?.user.username as string,
-      desc: session?.user.desc as string,
+      name: "",
+      deskripsi: "",
+      username: "",
+      gambar: null,
     },
   });
+  const [error, setError] = useState("");
+  const [sukses, setSukses] = useState("");
 
   const loading = form.formState.isSubmitting;
 
-  const checkUsername = async (username: string) => {
-    try {
-      const res = await fetch(`/api/userdata/byUsername/${username}`);
-      const { data } = await res.json();
+  const onSubmit = async (values: z.infer<typeof AddUserSchema>) => {
+    setError("");
+    setSukses("");
 
-      if (!data) {
-        return {
-          data: "NOT FOUND",
-        };
-      }
+    const str = values.name;
+    const str2 = values.username;
+    const regex = /^\s+$/;
+    const invalid = regex.test(str);
+    const invalid2 = regex.test(str2);
 
-      return data;
-    } catch (err) {
-      return null;
+    if (invalid) {
+      setError("Your name is empty!");
+
+      return;
     }
-  };
 
-  const onSubmit = async (values: z.infer<typeof addProfileSchema>) => {
+    if (invalid2) {
+      setError("Your username is empty!");
+
+      return;
+    }
+
+    const isUsernameTaken = await getUserByUsername(values.username);
+
+    if (isUsernameTaken) {
+      setError("Username is taken!");
+      return;
+    }
+
     try {
-      if (!isOnline) {
-        return null;
-      }
-
-      if (!values.name && !values.username) {
-        return null;
-      }
-
-      if (values.name.length === 0) {
-        console.log("no title");
-      }
-
-      if (values.username.length === 0) {
-        console.log("no username");
-      }
-
-      const checkedUsername = await checkUsername(values.username);
-
-      if (
-        checkedUsername.username === values.username &&
-        checkedUsername.username !== session?.user.username
-      ) {
-        setDoesUsernameExist(true);
-        return null;
-      } else {
-        setDoesUsernameExist(false);
-      }
-
-      if (!session && status !== "loading") {
-        return null;
-      }
-
       await update({
         ...session,
+        name: values.name,
+        username: values.username,
+        desc: values.deskripsi,
+        image: values.gambar,
+        isUsernameMade: true,
         user: {
-          ...session,
           name: values.name,
           username: values.username,
-          desc: values.desc ?? null,
+          desc: values.deskripsi,
+          image: values.gambar,
+          isUsernameMade: true,
         },
       });
 
-      const res = await fetch(`/api/userdata/${session?.user.email}`, {
+      await fetch(`/api/userdata/${session?.user.email}`, {
         method: "PUT",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({
           name: values.name,
           username: values.username,
-          desc: values.desc,
+          desc: values.deskripsi,
+          image: values.gambar,
         }),
-      });
-
-      if (!res.ok) {
-        console.log("bad fetch response");
-      }
-
-      router.push("/profile");
+      })
+        .then((res) => res.json())
+        .then((info) => {
+          setError(info?.error);
+          if (info.success) {
+            setSukses(info?.success);
+            router.push("/");
+          }
+        });
     } catch (err) {
-      console.log(err);
+      setError("Terjadi Kesalahan!");
     }
   };
 
-  useEffect(() => {
-    if (
-      session?.user.username &&
-      session.user.name &&
-      status === "authenticated"
-    ) {
-      router.push("/profile/edit-profile");
-    }
-  }, [session, router, status]);
-
-  if (status === "unauthenticated") {
-    return (
-      <div className="m-auto flex flex-col items-center space-y-2">
-        <h1 className="text-3xl font-bold">You haven{"'"}t signed up yet</h1>
-        <Link
-          href="/profile"
-          className="w-fit h-fit px-3 py-2 bg-green-600 text-white rounded-md"
-        >
-          Sign Up
-        </Link>
-      </div>
-    );
-  }
-
   return (
-    <>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full h-fit flex flex-col items-center py-12 md:py-24 overflow-y-auto hide-scrollbar hide-scrollbar::-webkit-scrollbar"
-      >
-        <div className="w-full h-fit flex flex-col justify-center items-center">
-          <h1 className="text-4xl md:text-5xl">Add Profile</h1>
-        </div>
-        <label className="md:w-[70%] w-[94%] text-left text-xl">Name</label>
-        <input
-          {...form.register("name")}
-          className="md:w-[70%] w-[94%] h-[6rem] p-4 shrink-0 border-2 border-black"
-          placeholder="title"
-        />
-        {form.formState.errors.name && (
-          <p className="text-red-600 text-lg">{`${form.formState.errors.name.message}`}</p>
-        )}
-        <label className="md:w-[70%] w-[94%] text-left text-xl">Username</label>
-        <input
-          {...form.register("username")}
-          className="md:w-[70%] w-[94%] h-[6rem] p-4 shrink-0 border-2 border-black"
-          placeholder="title"
-        />
-        {form.formState.errors.username && (
-          <p className="text-red-600 text-lg">{`${form.formState.errors.username.message}`}</p>
-        )}
-        {doesUsernameExist && (
-          <p className="text-red-600 text-lg">Username already exists</p>
-        )}
-        <label className="md:w-[70%] w-[94%] text-left text-xl mt-12">
-          Description
-          <code className="md:text-sm text-slate-600">*optional</code>
-        </label>
-        <input
-          {...form.register("desc")}
-          className="md:max-w-[70%] w-[94%] h-[6rem] p-4 shrink-0 border-2 border-black"
-          placeholder="desc"
-        />
-        <input
-          type="submit"
-          disabled={loading}
-          className={`w-[94%] md:w-[70%] py-7 ${
-            loading ? "bg-green-900 cursor-not-allowed" : "bg-green-800"
-          }  hover:bg-green-700 text-lg text-white mt-8 cursor-pointer`}
-        />
-      </form>
-    </>
+    <div className="w-full h-screen overflow-y-auto">
+      {/* tengahkan form nhya? */}
+      <div className="w-full h-fit my-auto flex flex-col items-center justify-center gap-y-2 py-14">
+        <h1 className="text-3xl text-center font-bold">ADD PROFILE</h1>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-[20rem] md:w-[27rem] lg:w-[30rem] space-y-4 p-4 bg-white"
+          >
+            <FormField
+              control={form.control}
+              name="gambar"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Image</FormLabel>
+                  <FormControl>
+                    <FileUpload
+                      disabled={loading}
+                      endPoint="profileImage"
+                      value={field.value as string}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={loading}
+                      placeholder={session?.user.name as string}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Username</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deskripsi"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-semibold">Description</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {sukses && <FormSuccess pesan={sukses} />}
+            {error && <FormError pesan={error} />}
+            <Button
+              type="submit"
+              className="disabled:bg-slate-500"
+              disabled={loading}
+            >
+              Daftar
+            </Button>
+            <div className="flex flex-col items-center justify-between md:flex-row">
+              <Link
+                href="/laporkan"
+                className="text-red-600 text-sm hover:underline"
+              >
+                Lapor Bug / Error
+              </Link>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 }
+
+export default AddProfile;

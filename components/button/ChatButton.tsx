@@ -1,7 +1,8 @@
 "use client";
 
-import { addMessageRoom } from "@/libs/addMessageRoom";
+import { addMessageRoom } from "@/lib/addMessageRoom";
 import { useMutation } from "@tanstack/react-query";
+import { MessageCirclePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -44,23 +45,7 @@ function ChatButton({
       className="grow bg-green-700 hover:bg-green-600 rounded-md text-white flex items-center justify-center gap-x-2"
     >
       Chat
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-label="add-message"
-        className="lucide lucide-message-circle-plus w-[15%] md:w-[10%] h-[90%] md:h-[60%]"
-      >
-        <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-        <path d="M8 12h8" />
-        <path d="M12 8v8" />
-      </svg>
+      <MessageCirclePlus />
     </button>
   );
 }

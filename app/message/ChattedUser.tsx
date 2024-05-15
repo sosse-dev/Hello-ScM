@@ -4,8 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import { Message, User } from "@prisma/client";
-import OfflinePage from "@/components/OfflinePage";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 
 type MessageWithSenderOrReceiver = Message & {
   receiver: User;
@@ -27,20 +25,20 @@ export default function ChattedUser({
   | MessageWithReceiver
   | MessageWithSender
   | any) {
-  const [isOnline] = UseCheckConnection();
-
-  if (!isOnline) {
-    return <OfflinePage />;
-  }
 
   return (
     <>
+    {data.length === 0 && (
+      <div className="w-full h-[80vh] flex flex-col items-center justify-center">
+        <h1 className="">No Message</h1>
+      </div>
+    )}
       {data?.map((user: MessageWithSenderOrReceiver, i: number) => {
         return (
           <Fragment key={user.id ?? i}>
             <Link
               href={`/message/chat/${user.id}`}
-              className="w-full h-fit flex justify-between items-center hover:bg-slate-200 border-b-2 border-slate-300 gap-x-2 py-2 cursor-pointer px-4"
+              className="w-full h-fit flex justify-between items-center hover:bg-slate-100 gap-x-2 py-2 cursor-pointer px-4"
             >
               {/* profile and name searched user */}
               <div className="flex items-center gap-x-2">

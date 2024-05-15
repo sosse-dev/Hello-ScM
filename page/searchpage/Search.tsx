@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import qs from "query-string";
-import ViewLoader from "@/libs/ViewLoader";
+import ViewLoader from "@/lib/ViewLoader";
 import { User } from "@prisma/client";
 
 function Search() {
@@ -39,7 +39,7 @@ function Search() {
       });
 
       if (!res.ok) {
-        console.log("bad fetch response");
+        return
       }
 
       const { data, nextCursor } = await res.json();
@@ -61,20 +61,20 @@ function Search() {
       initialPageParam: undefined,
     });
 
-  console.log(data);
-
   return (
     <>
       <div
-        className={`h-20 w-full flex justify-center space-x-4 items-center bg-slate-100`}
+      style={{ height: "auto"}}
+        className={`w-full flex justify-center space-x-4 items-center`}
       >
         <input
           onChange={(e) => {
             setSearchInput(e.target.value), refetch();
           }}
           value={searchInput}
-          className="px-5 ml-4 h-[70%] w-[80%] rounded-full border-2 border-slate-800 outline-none"
-          placeholder="search input.."
+          style={{width: "80%"}}
+          className="px-5 ml-4 py-4 rounded-full outline-none"
+          placeholder="search user"
         />
         {searchInput.length > 0 && (
           <button
