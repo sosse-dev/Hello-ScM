@@ -4,4 +4,5 @@ export const copyLinkUrlPost = (postId: string) => {
 
   const link = `${base}/post?id=${postId}`;
   navigator.clipboard.writeText(link);
+  console.log("Hei You Copy ME!")
 };
