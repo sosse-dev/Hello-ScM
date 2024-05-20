@@ -58,7 +58,7 @@ function Login() {
       const res = await signIn("credentials", {
         email: email,
         password: password,
-        redirect: false,
+        redirectTo: "/",
       });
 
       if (!res?.ok) {
@@ -67,7 +67,6 @@ function Login() {
       }
 
       if (res?.ok) {
-        router.push("/profile");
         await update({
           isUsernameMade: true,
           user: {

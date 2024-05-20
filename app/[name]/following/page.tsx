@@ -9,8 +9,6 @@ import { Fragment } from "react";
 import qs from "query-string";
 import ViewLoader from "@/lib/ViewLoader";
 import { Follow, User } from "@prisma/client";
-import ErrorPage from "@/components/ErrorPage";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 import { Waves } from "lucide-react";
 import { useFetchFollowing } from "@/hooks/action/useFetchFollowing";
 import NavbarFollow from "@/components/Navbar/NavbarFollow";

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import BackButton from "@/components/button/BackButton";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
+
 import { useRouter } from "next/navigation";
 
 const reportSchema = z.object({

@@ -8,7 +8,7 @@ export const useFetchFollowerAndFollowing = ({
 }) => {
   const getFollowerAndFollowing = async () => {
     try {
-      const res = await fetch(`/api/otheruser${pathname}`);
+      const res = await fetch(`/api/otheruser/${pathname}`);
 
       if (!res.ok) {
         toast.error("Something went wrong!");
@@ -59,10 +59,12 @@ export const useFetchFollowerAndFollowingFromCurrentUser = (username: string) =>
     }
   };
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["followsLength"],
     queryFn: getFollowerAndFollowing,
   });
+
+  refetch()
 
   return { data, isLoading };
 }

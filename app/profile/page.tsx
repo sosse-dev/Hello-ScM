@@ -68,7 +68,7 @@ function Profile() {
         >
           Follower
           <p className="text-center text-lg font-medium text-zinc-600">
-            {data?.data?.length === 0 ? 0 : data?.data?.length ?? 0}
+            {data?.data?.length}
           </p>
         </Link>
         <Link
@@ -77,7 +77,7 @@ function Profile() {
         >
           Following
           <p className="text-center text-lg font-medium text-zinc-600">
-            {data?.data2?.length === 0 ? 0 : data?.data2?.length ?? 0}
+            {data?.data2?.length}
           </p>
         </Link>
         <Link

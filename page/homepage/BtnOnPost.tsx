@@ -5,8 +5,6 @@ import {
   Heart,
   Link2,
   MailWarning,
-  MailWarningIcon,
-  MessageCircle,
   MessageCircleDashed,
   Unlink,
 } from "lucide-react";

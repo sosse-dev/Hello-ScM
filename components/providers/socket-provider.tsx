@@ -27,9 +27,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       {
         path: "/api/socket/io",
         addTrailingSlash: false,
-        transports: ['websocket'],
-        secure: true,
-        // ! Ditambahkan Karena error socket io di vercel
       }
     );
 

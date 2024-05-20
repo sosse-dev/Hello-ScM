@@ -17,4 +17,5 @@ module.exports = {
       "@react-email/tailwind",
     ],
   },
+  reactStrictMode: false
 };

@@ -42,6 +42,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ data: data, nextCursor, response: "Sended" });
   } catch (err) {
+    console.log("Posted dari profile saya", err)
     return NextResponse.json({ error: "Internal Error", status: 500 });
   }
 }

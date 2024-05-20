@@ -1,18 +1,18 @@
-"use client";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
-import { useEffect } from "react";
-import { toast } from "sonner";
+// "use client";
+// import { Connection } from "@/hooks/UseCheckConnection";
+// import { useEffect } from "react";
+// import { toast } from "sonner";
 
-const NotifikasiProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isOnline] = UseCheckConnection();
+// const NotifikasiProvider = ({ children }: { children: React.ReactNode }) => {
+//   const [isOnline] = UseCheckConnection();
 
-  useEffect(() => {
-    if (!isOnline) {
-      toast.warning("You Are offline!", { closeButton: true });
-    }
-  }, [isOnline]);
+//   useEffect(() => {
+//     if (!isOnline) {
+//       toast.warning("You Are offline!", { closeButton: true });
+//     }
+//   }, [isOnline]);
 
-  return <>{children}</>;
-};
+//   return <>{children}</>;
+// };
 
-export default NotifikasiProvider;
+// export default NotifikasiProvider;

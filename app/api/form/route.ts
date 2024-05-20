@@ -57,10 +57,10 @@ export async function POST(req: Request) {
       isUsernameMade: true
     },
   });
-  //! INFO: ini buat kirim verifikasi token!
-  // const verificationToken = await generateVerificationToken(email);
+  
+  const verificationToken = await generateVerificationToken(email);
 
-  // await sendVerificationEmail(verificationToken.email, verificationToken.token);
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
   return NextResponse.json({ success: "Signed up!" });
 };

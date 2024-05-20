@@ -83,8 +83,7 @@ export const authOption: AuthOptions = {
 
       const cekUser = await getUserById(user.id as string);
 
-      // if (!cekUser?.emailVerified) return false;
-      // TODO: uncomment up here!
+      if (!cekUser?.emailVerified) return false;
 
       return true;
     },

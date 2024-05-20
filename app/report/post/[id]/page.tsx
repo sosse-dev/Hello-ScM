@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import Link from "next/link";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 
 const reportPostSchema = z.object({
   title: z.string().min(1),

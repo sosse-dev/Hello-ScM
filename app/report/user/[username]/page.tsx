@@ -1,6 +1,5 @@
 "use client";
 import BackButton from "@/components/button/BackButton";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";

@@ -39,7 +39,7 @@ function Search() {
       });
 
       if (!res.ok) {
-        return
+        return null
       }
 
       const { data, nextCursor } = await res.json();

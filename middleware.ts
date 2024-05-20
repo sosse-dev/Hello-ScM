@@ -29,8 +29,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // *Sign Up dan Login page ke proteksi kalau udah Email verified!
-
   if (
     !session &&
     request.nextUrl.pathname !== "/login" &&

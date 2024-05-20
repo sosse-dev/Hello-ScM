@@ -6,7 +6,6 @@ import { ElementRef, Fragment, useRef } from "react";
 import { UseChatScroll } from "@/hooks/UseChatScroll";
 import { usePathname } from "next/navigation";
 import ViewLoader from "@/lib/ViewLoader";
-import { UseCheckConnection } from "@/hooks/UseCheckConnection";
 
 interface ChatMessagesProps {
   apiUrl: string;
@@ -43,7 +42,7 @@ export const ChatMessages = ({ apiUrl, userId }: ChatMessagesProps) => {
       <div ref={bottomRef} />
       {data?.pages?.map((data, i: number) => (
         <Fragment key={i}>
-          {data.chats.map((message: any, i: number) => (
+          {data?.chats?.map((message: any, i: number) => (
             <div
               key={data.id ?? i}
               className={`w-fit h-fit px-4 py-2 flex flex-col bg-slate-300 ${
