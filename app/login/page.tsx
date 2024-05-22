@@ -58,23 +58,16 @@ function Login() {
       const res = await signIn("credentials", {
         email: email,
         password: password,
-        redirect: false,
+        redirectTo: "/",
       });
 
-      if (!res?.ok) {
+      if (res?.error) {
         setError("Something went wrong!");
         return;
       }
 
       if (res?.ok) {
-        await update({
-          isUsernameMade: true,
-          user: {
-            isUsernameMade: true,
-          },
-        });
         toast.success("Login Success!");
-        router.push("/");
       }
     } catch (err) {
       setError("Something went wrong!");

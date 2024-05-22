@@ -60,7 +60,6 @@ function Feed() {
                       src={post?.image ?? "/default-profile-picture.png"}
                       width={200}
                       height={200}
-                      priority={true}
                       loading="lazy"
                       alt="img-photo"
                     />
