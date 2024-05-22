@@ -34,6 +34,8 @@ function EditPorfile() {
     },
   });
 
+  // TODO: NAMA GAK BERUBAH!
+
   const [error, setError] = useState("");
   const [sukses, setSukses] = useState("");
 
@@ -54,21 +56,6 @@ function EditPorfile() {
     }
 
     try {
-      await update({
-        ...session,
-        name: values.name,
-        desc: values.deskripsi,
-        image: values.gambar,
-        isUsernameMade: true,
-        user: {
-          ...session?.user,
-          name: values.name,
-          desc: values.deskripsi,
-          image: values.gambar,
-          isUsernameMade: true,
-        },
-      });
-
       await fetch(`/api/userdata/edit/${session?.user.email}`, {
         method: "PUT",
         headers: { "Content-type": "application/json" },
@@ -79,9 +66,24 @@ function EditPorfile() {
         }),
       })
         .then((res) => res.json())
-        .then((info) => {
+        .then(async (info) => {
           setError(info?.error);
-          if (info.success) {
+          if (info?.success) {
+            await update({
+              ...session,
+              name: values.name,
+              desc: values.deskripsi,
+              image: values.gambar,
+              isUsernameMade: true,
+              user: {
+                ...session?.user,
+                name: values.name,
+                desc: values.deskripsi,
+                image: values.gambar,
+                isUsernameMade: true,
+              },
+            });
+
             router.push("/");
             setSukses(info?.success);
           }
