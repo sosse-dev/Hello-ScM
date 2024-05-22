@@ -1,12 +1,7 @@
 "use client";
-
-import BackButton from "@/components/button/BackButton";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Fragment } from "react";
-import qs from "query-string";
 import ViewLoader from "@/lib/ViewLoader";
 import { Follow, User } from "@prisma/client";
 import { Waves } from "lucide-react";
@@ -27,7 +22,7 @@ function Following() {
     <LayoutFollow>
       <NavbarFollow title="Following" />
       <div className="h-[100vh] w-full mt-20 flex flex-col space-y-3 px-2 overflow-y-auto pb-20 lg:pb-0">
-        {data?.pages[0]?.data2.length === 0 && !isLoading && (
+        {data?.pages[0]?.data2?.length === 0 && !isLoading && (
           <div className="w-full h-full flex flex-col items-center justify-center mb-20">
             <Waves />
           </div>

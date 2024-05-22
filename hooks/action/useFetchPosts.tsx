@@ -4,10 +4,6 @@ import qs from "query-string";
 export const useFetchPosts = ({ id }: { id: string }) => {
   const getThisPosts = async ({ pageParam = undefined }) => {
     try {
-      if (!id) {
-        return null;
-      }
-
       const url = qs.stringifyUrl(
         {
           url: "/api/post/posted",
@@ -43,6 +39,7 @@ export const useFetchPosts = ({ id }: { id: string }) => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch
   } = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: getThisPosts,
@@ -52,5 +49,5 @@ export const useFetchPosts = ({ id }: { id: string }) => {
     initialPageParam: undefined,
   });
 
-  return { posts, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage };
+  return { posts, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, refetch };
 };

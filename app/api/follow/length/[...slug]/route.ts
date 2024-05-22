@@ -1,12 +1,14 @@
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(
+  req: Request,
+  { params }: { params: { slug: string } }
+) {
   try {
-    const { searchParams } = new URL(req.url);
-    const username = searchParams.get("username");
+    const username = params.slug[0]
 
-    if(!username) {
+    if(!username || username === "undefined") {
         return NextResponse.json({ response: "Invalid username", status: 400 })
     }
 
@@ -31,6 +33,7 @@ export async function GET(req: Request) {
         follower: true,
       },
     });
+
     return NextResponse.json({ data: thisFollower, data2: thisUserFollowing });
   } catch (err) {
     return NextResponse.json({ error: "internal Error", status: 500 });

@@ -8,7 +8,7 @@ export const useFetchFollowing = () => {
   const getFollowingUser = async ({ pageParam = undefined }) => {
     try {
       const url = qs.stringifyUrl({
-        url: `/api/follow/${pathname?.slice(0, -9)}`,
+        url: `/api/follow/${pathname?.slice(1, -10)}`,
         query: {
           cursor2: pageParam,
         },
@@ -21,7 +21,6 @@ export const useFetchFollowing = () => {
       }
 
       const followingUser = await res.json();
-
       return followingUser;
     } catch (err) {
       return;

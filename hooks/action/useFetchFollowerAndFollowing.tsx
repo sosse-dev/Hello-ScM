@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 export const useFetchFollowerAndFollowing = ({
@@ -39,21 +40,23 @@ export const useFetchFollowerAndFollowing = ({
     queryFn: getFollowerAndFollowing,
   });
 
-  return {data, isLoading, refetch}
+  return { data, isLoading, refetch };
 };
 
-export const useFetchFollowerAndFollowingFromCurrentUser = (username: string) => {
+export const useFetchFollowerAndFollowingFromCurrentUser = (
+  username: string
+) => {
   const getFollowerAndFollowing = async () => {
     try {
-      const res = await fetch(
-        `/api/follow/length?username=${username}`
-      );
+      const res = await fetch(`/api/follow/length/${username}`);
 
       if (!res.ok) {
         return null;
       }
 
-      return await res.json();
+      const data = await res.json();
+
+      return data;
     } catch (err) {
       return null;
     }
@@ -64,7 +67,17 @@ export const useFetchFollowerAndFollowingFromCurrentUser = (username: string) =>
     queryFn: getFollowerAndFollowing,
   });
 
-  refetch()
+  useEffect(() => {
+    if (data?.response === "Invalid username") {
+      const refetching = setInterval(() => {
+        refetch();
+      }, 1000);
+
+      return () => {
+        clearInterval(refetching);
+      };
+    }
+  }, [data]);
 
   return { data, isLoading };
-}
+};

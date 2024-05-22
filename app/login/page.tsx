@@ -58,12 +58,12 @@ function Login() {
       const res = await signIn("credentials", {
         email: email,
         password: password,
-        redirectTo: "/",
+        redirect: false,
       });
 
       if (!res?.ok) {
         setError("Something went wrong!");
-        return
+        return;
       }
 
       if (res?.ok) {
@@ -74,6 +74,7 @@ function Login() {
           },
         });
         toast.success("Login Success!");
+        router.push("/");
       }
     } catch (err) {
       setError("Something went wrong!");

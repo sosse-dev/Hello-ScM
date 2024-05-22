@@ -1,14 +1,10 @@
 "use client";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
-import qs from "query-string";
+import { Fragment, useEffect } from "react";
 import ViewLoader from "@/lib/ViewLoader";
 import { Post, User } from "@prisma/client";
-import { Loader2 } from "lucide-react";
 import { useFetchCurrentUserPosts } from "@/hooks/action/useFetchCurrentUserPosts";
-import Loading from "@/components/loader/Loading";
 import Loading2 from "@/components/loader/Loading2";
 
 type PostWithUserProfile = Post & {
@@ -16,11 +12,16 @@ type PostWithUserProfile = Post & {
 };
 
 function PostsProfile({ sessionId }: { sessionId: string }) {
-  const { posts, isFetchingNextPage, isLoading, hasNextPage, fetchNextPage } =
-    useFetchCurrentUserPosts(sessionId);
-
+  const {
+    posts,
+    isFetchingNextPage,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+  } = useFetchCurrentUserPosts(sessionId);
+  
   if (isLoading) {
-    return <Loading2 />
+    return <Loading2 />;
   }
 
   return (
@@ -56,25 +57,7 @@ function PostsProfile({ sessionId }: { sessionId: string }) {
         fetchNextPage={() => fetchNextPage()}
         hasNextPage={hasNextPage}
       />
-      {isFetchingNextPage && (
-        <div className="w-12 h-12 animate-spin mx-auto mt-6">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-label="loader"
-            className="lucide lucide-loader-2 w-full h-full"
-          >
-            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-          </svg>
-        </div>
-      )}
+      {isFetchingNextPage && <Loading2 />}
     </div>
   );
 }

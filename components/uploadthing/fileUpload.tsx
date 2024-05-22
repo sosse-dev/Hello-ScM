@@ -30,6 +30,7 @@ export default function FileUpload({
       setLoadingUpload(false);
     },
     onUploadError: (e) => {
+      console.log("Error Upload:", e);
       setLoadingUpload(false);
       toast.error("Something went wrong!, perhaps the image is too big");
     },
@@ -42,10 +43,6 @@ export default function FileUpload({
   const fileTypes = permittedFileInfo?.config
     ? Object.keys(permittedFileInfo?.config)
     : [];
-
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    // setFiles(acceptedFiles);
-  }, []);
 
   // TODO: Validasi tipe file! untuk upload gambar
 
@@ -60,6 +57,7 @@ export default function FileUpload({
       // @ts-ignore
       fileInput?.current?.files?.[0]
     );
+    console.log("imageUrl, image url yang dipilih dari file!", imageUrl);
     if (imageUrl) {
       setOpenDialog(true);
     }
@@ -80,6 +78,8 @@ export default function FileUpload({
       .then(
         (blobFile) => new File([blobFile], "image.jpg", { type: "image/jpg" })
       );
+
+    console.log("File yang telah dikonversikan dari blob jadi file!", file);
 
     setGambar(croppedImageUrl as string);
 

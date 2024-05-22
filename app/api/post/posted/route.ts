@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 const AMOUNT_OF_POST_TAKEN = 6;
 
 export async function GET(req: Request) {
-  try {
-    const { searchParams } = new URL(req.url);
+  const { searchParams } = new URL(req.url);
 
-    const cursor = searchParams.get("cursor");
-    const userId = searchParams.get("userId");
+  const cursor = searchParams.get("cursor");
+  const userId = searchParams.get("userId");
+  try {
 
     if (!userId) {
       return NextResponse.json({ response: "Invalid User Id", status: 400 });

@@ -1,14 +1,12 @@
 "use client";
-
 import DropdownBtnProfile from "@/page/profilpage/DropdownBtnProfile";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import PostsProfile from "../../page/profilpage/PostsProfile";
-import { ImagePlus, Loader2 } from "lucide-react";
 import { useFetchFollowerAndFollowingFromCurrentUser } from "@/hooks/action/useFetchFollowerAndFollowing";
 import Loading from "@/components/loader/Loading";
+import FollowAndPostBtn from "@/components/Profile/FollowAndPostBtn";
 
 function Profile() {
   const { data: session } = useSession();
@@ -17,7 +15,7 @@ function Profile() {
   );
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -36,7 +34,15 @@ function Profile() {
           <h2 className="text-xl text-zinc-600 break-words">
             {session?.user.username}
           </h2>
-          {session?.user.role === "ADMIN" && <h3 title="Admin Verified!" style={{marginTop: "2px"}} className="w-fit px-2 rounded-full bg-green-700 text-white">Admin!</h3>}
+          {session?.user.role === "ADMIN" && (
+            <h3
+              title="Admin Verified!"
+              style={{ marginTop: "2px" }}
+              className="w-fit px-2 rounded-full bg-green-700 text-white"
+            >
+              Admin!
+            </h3>
+          )}
         </div>
         {/* profil pic */}
         <div className="h-[7rem] w-[7rem] rounded-full overflow-hidden">
@@ -62,30 +68,12 @@ function Profile() {
       </div>
       <hr className={`${session?.user.desc ? "hidden" : "block"}`} />
       <div className="h-fit w-full flex items-center justify-between space-x-3 pr-4 border-b-2 border-slate-400">
-        <Link
-          href={{ pathname: `/${session?.user.username}/follower` }}
-          className="grow py-2 px-3 text-center text-2xl hover:bg-slate-100 font-bold flex flex-col"
-        >
-          Follower
-          <p className="text-center text-lg font-medium text-zinc-600">
-            {data?.data?.length}
-          </p>
-        </Link>
-        <Link
-          href={{ pathname: `/${session?.user.username}/following` }}
-          className="grow py-2 px-3 flex flex-col text-2xl hover:bg-slate-100 font-bold text-center"
-        >
-          Following
-          <p className="text-center text-lg font-medium text-zinc-600">
-            {data?.data2?.length}
-          </p>
-        </Link>
-        <Link
-          href="/profile/post"
-          className="w-fit h-fit bg-green-700 text-white shrink-0 p-2 rounded-full grid place-items-center hover:bg-green-600"
-        >
-          <ImagePlus size={30} />
-        </Link>
+        <FollowAndPostBtn
+          username={session?.user.username as string}
+          FollowerLength={data?.data?.length ?? 0}
+          FollowingLength={data?.data2?.length ?? 0}
+          CurrentUser={true}
+        />
       </div>
       <PostsProfile sessionId={session?.user.id as string} />
     </div>

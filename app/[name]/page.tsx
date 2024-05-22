@@ -11,6 +11,7 @@ import { useFetchFollowerAndFollowing } from "@/hooks/action/useFetchFollowerAnd
 import Loading from "@/components/loader/Loading";
 import UserNotFound from "@/components/NotFound/UserNotFound";
 import { MessageCircleWarning } from "lucide-react";
+import FollowAndPostBtn from "@/components/Profile/FollowAndPostBtn";
 
 function User() {
   const { data: session } = useSession();
@@ -46,16 +47,21 @@ function User() {
   return (
     <div className="w-full h-screen overflow-y-auto hide-scrollbar hide-scrollbar::-webkit-scrollbar">
       <div className="h-[9rem] w-full flex items-center justify-between px-8 shrink-0 pt-5">
-        {/* name name */}
         <div className="flex flex-col w-[60%]">
           <h1 className="text-3xl break-words">{data?.data.name ?? ""}</h1>
           <h2 className="text-xl pl-1 text-zinc-600 break-words">
             {data?.data.username ?? ""}
           </h2>
-          {data?.data.role === "ADMIN" && <h3 title="Admin Verified!" style={{marginTop: "2px"}} className="w-fit px-2 rounded-full bg-green-700 text-white">Admin!</h3>}
+          {data?.data.role === "ADMIN" && (
+            <h3
+              title="Admin Verified!"
+              style={{ marginTop: "2px" }}
+              className="w-fit px-2 rounded-full bg-green-700 text-white"
+            >
+              Admin!
+            </h3>
+          )}
         </div>
-        {/* profil pic */}
-        <div className="">
           <div className="h-[7rem] w-[7rem] rounded-full overflow-hidden">
             <Image
               src={data?.data.image ?? "/default-profile-picture.png"}
@@ -65,7 +71,6 @@ function User() {
               alt="profile-picture"
             />
           </div>
-        </div>
       </div>
       <div className="h-[4rem] shrink-0 w-full flex p-2 space-x-2">
         <FollowBtn
@@ -86,31 +91,17 @@ function User() {
           <MessageCircleWarning />
         </Link>
       </div>
-      {/* desc */}
       <div className="h-fit w-full bg-slate-100 grid place-items-center py-5 md:px-14 md:py-7">
         <p className="text-center md:text-2xl">{data?.data.desc ?? ""}</p>
       </div>
       <div className="h-fit w-full flex items-center justify-between space-x-3 border-b-2 border-slate-400">
-        <Link
-          href={{ pathname: `${pathname}/follower` }}
-          className="grow py-2 px-3 text-center text-2xl hover:bg-slate-300 font-bold flex flex-col"
-        >
-          Follower
-          <p className="text-center text-lg font-medium text-zinc-600">
-            {data?.follows.data.length}
-          </p>
-        </Link>
-        <Link
-          href={{ pathname: `${pathname}/following` }}
-          className="grow py-2 px-3 flex flex-col text-2xl hover:bg-slate-300 font-bold text-center"
-        >
-          Following
-          <p className="text-center text-lg font-medium text-zinc-600">
-            {data?.follows.data2.length}
-          </p>
-        </Link>
+        <FollowAndPostBtn
+          username={data?.data.username as string}
+          FollowerLength={data?.follows.data.length}
+          FollowingLength={data?.follows.data2.length}
+          CurrentUser={false}
+        />
       </div>
-      {/* posted photos or videos */}
       <Posts id={data?.data.id} />
     </div>
   );
