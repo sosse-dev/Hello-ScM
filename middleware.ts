@@ -60,16 +60,16 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  if (
-    !session?.emailVerified &&
-    request.nextUrl.pathname !== "/login" &&
-    request.nextUrl.pathname !== "/sign-up" &&
-    !isPublicRoute
-  ) {
-    return NextResponse.redirect(new URL("/login", request.url), {
-      status: 303,
-    });
-  }
+  // if (
+  //   !session?.emailVerified &&
+  //   request.nextUrl.pathname !== "/login" &&
+  //   request.nextUrl.pathname !== "/sign-up" &&
+  //   !isPublicRoute
+  // ) {
+  //   return NextResponse.redirect(new URL("/login", request.url), {
+  //     status: 303,
+  //   });
+  // }
 
   return null;
 }
