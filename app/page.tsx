@@ -33,6 +33,7 @@ export default async function Home() {
                     width={60}
                     height={60}
                     alt="profile-picture"
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </Link>

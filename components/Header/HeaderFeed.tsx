@@ -25,6 +25,7 @@ export default function HeaderFeed({
             src={image ?? "/default-profile-picture.png"}
             width={80}
             height={80}
+            loading="lazy"
             alt="profile-picture"
           />
         </div>

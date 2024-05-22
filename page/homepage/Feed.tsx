@@ -58,9 +58,10 @@ function Feed() {
                     <Image
                       className="h-full w-full object-contain"
                       src={post?.image ?? "/default-profile-picture.png"}
-                      priority={true}
                       width={200}
                       height={200}
+                      priority={true}
+                      loading="lazy"
                       alt="img-photo"
                     />
                   </div>

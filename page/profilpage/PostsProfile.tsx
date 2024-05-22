@@ -43,6 +43,7 @@ function PostsProfile({ sessionId }: { sessionId: string }) {
                       src={post?.image ?? ""}
                       width={400}
                       height={400}
+                      loading="lazy"
                       className="cursor-pointer break-inside-avoid object-cover"
                       alt="post"
                     />

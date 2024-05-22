@@ -26,7 +26,7 @@ export default function RootLayout({
                 {children}
                 <FooterMenu />
               </div>
-              <Toaster className="z-[100]" />
+              <Toaster className="left-2 md:left-6 z-[100] bg-slate-100" />
             </QueryProvider>
           </SocketProvider>
         </Providers>

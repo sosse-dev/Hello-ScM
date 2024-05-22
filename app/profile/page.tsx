@@ -51,6 +51,7 @@ function Profile() {
             width={80}
             height={80}
             priority={true}
+            loading="lazy"
             className="w-full h-auto object-contain"
             alt="profil-photo"
           />

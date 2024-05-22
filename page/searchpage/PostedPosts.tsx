@@ -36,9 +36,10 @@ function PostedPosts() {
                     }}
                   >
                     <Image
-                      src={post?.image ?? ""}
+                      src={post?.image}
                       width={400}
                       height={400}
+                      loading="lazy"
                       className="h-48 lg:h-64 w-full cursor-pointer object-cover break-inside-avoid border-black"
                       alt="post"
                     />
