@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/lib/prisma";
 
 const AMOUNT_OF_POST_TAKEN = 10;
 
 export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const cursor = searchParams.get("cursor");
   try {
-    const { searchParams } = new URL(req.url);
-    const cursor = searchParams.get("cursor");
-
     let data = [];
 
     if (cursor) {
@@ -34,6 +33,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ data, nextCursor, response: "FOUND" });
   } catch (err) {
+    console.log("Dari All Posts explore", err);
     return NextResponse.json({ error: "Internal Error", status: 500 });
   }
 }
