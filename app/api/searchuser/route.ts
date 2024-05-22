@@ -1,19 +1,17 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"
+import { prisma } from "@/lib/prisma";
 
 const AMOUNT_OF_USERS_TAKEN = 30;
 
 export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const searchInput = searchParams.get("searchInput");
+  const cursor = searchParams.get("cursor");
   try {
-    const { searchParams } = new URL(req.url);
-    const searchInput = searchParams.get("searchInput");
-    const cursor = searchParams.get("cursor");
-
     let data = [];
 
     if (cursor) {
-      data = 
-      await prisma.user.findMany({
+      data = await prisma.user.findMany({
         where: {
           name: {
             contains: searchInput ?? "",
