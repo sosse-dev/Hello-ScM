@@ -1,12 +1,7 @@
 "use client";
-
-import BackButton from "@/components/button/BackButton";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Fragment } from "react";
-import qs from "query-string";
 import ViewLoader from "@/lib/ViewLoader";
 import { Follow, User } from "@prisma/client";
 import { Waves } from "lucide-react";
