@@ -1,0 +1,41 @@
+name: Hello-SCM CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [20.13.1]
+    env: 
+      DATABASE_URL: ${{secret.DATABASE_URL}}
+      GOOGLE_CLIENT_ID: ${{secret.GOOGLE_CLIENT_ID}}
+      GOOGLE_CLIENT_SECRET: ${{secret.GOOGLE_CLIENT_SECRET}}
+      NEXTAUTH_URL: ${{secret.NEXTAUTH_URL}}
+      NEXT_PUBLIC_SITE_URL: ${{secret.NEXT_PUBLIC_SITE_URL}}
+      NEXT_URL: ${{secret.NEXT_URL}}
+      AUTH_SECRET: ${{ecret.AUTH_SECRET}}
+      NODE_ENV: ${{secret.NODE_ENV}}
+      UPLOADTHING_SECRET: ${{secret.UPLOADTHING_SECRET}}
+      UPLOADTHING_APP_ID: ${{secret.UPLOADTHING_APP_ID}}
+      RESEND_API_KEY: ${{secret.RESEND_API_KEY}}
+      EMAIL_SERVER_HOST: ${{secret.EMAIL_SERVER_HOST}}
+      EMAIL_SERVER_PORT: ${{secret.EMAIL_SERVER_PORT}}
+      EMAIL_SERVER_USER: ${{secret.EMAIL_SERVER_USER}}
+      EMAIL_SERVER_PASSWORD: ${{secret.EMAIL_SERVER_PASSWORD}}
+      EMAIL_FROM: ${{secret.EMAIL_FROM}}
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
