@@ -1,9 +1,7 @@
-import { getUserByEmail } from "@/app/actions/getUserByEmail";
+import getUserByEmailAndPassword from "@/app/actions/getUserByEmailAndPassword";
 import { sendVerificationEmail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/tokens";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { LoginSchema } from "@/types/schemaZod";
-import { signIn } from "next-auth/react";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -12,18 +10,18 @@ export async function POST(req: Request) {
   const validateFields = await LoginSchema.safeParse(values);
 
   if (!validateFields.success) {
-    return NextResponse.json({ error: "Invalid input!" });
+    return NextResponse.json({ error: "Invalid input!" }, { status: 400 });
   }
 
   const { email, password } = validateFields.data;
 
-  const cekUser = await getUserByEmail(email);
+  const cekUser = await getUserByEmailAndPassword(email, password);
 
   if (!cekUser || !cekUser.email || !cekUser.password) {
-    return NextResponse.json({ error: "Email or passwords is wrong!" });
+    return NextResponse.json({ error: "Email or password is wrong!" });
   }
 
-  if (!cekUser.emailVerified) {
+  if (cekUser && !cekUser.emailVerified) {
     const verificationToken = await generateVerificationToken(cekUser.email);
 
     await sendVerificationEmail(
@@ -37,15 +35,11 @@ export async function POST(req: Request) {
   }
 
   try {
-    // signIn("credentials", {
-    //   email: email,
-    //   password: password,
-    // });
-
     return NextResponse.json({ success: "Login success!" });
   } catch (error) {
-    return NextResponse.json({ error: "Something went wrong!" });
-    // kenapa throw error? agar di redirectTo berjalan, kenapa? tak tahu
-    throw error;
+    return NextResponse.json(
+      { error: "Something went wrong!" },
+      { status: 500 }
+    );
   }
 }

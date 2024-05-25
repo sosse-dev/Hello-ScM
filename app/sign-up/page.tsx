@@ -46,7 +46,7 @@ function AddProfile() {
 
     if (status === "authenticated") {
       setError("You are already signed in!");
-      return;
+      redirect("/");
     }
 
     const str = values.name;
@@ -60,19 +60,6 @@ function AddProfile() {
     }
 
     try {
-      await update({
-        name: values.name,
-        username: values.username,
-        image: values.gambar,
-        isUsernameMade: true,
-        user: {
-          name: values.name,
-          username: values.username,
-          image: values.gambar,
-          isUsernameMade: true,
-        },
-      });
-
       fetch("/api/form", {
         method: "POST",
         headers: {
@@ -81,10 +68,24 @@ function AddProfile() {
         body: JSON.stringify(values),
       })
         .then((res) => res.json())
-        .then((info) => {
+        .then(async (info) => {
           setSukses(info?.success);
           setError(info?.error);
-          redirect("/login");
+
+          if (info.success) {
+            await update({
+              name: values.name,
+              username: values.username,
+              image: values.gambar,
+              isUsernameMade: true,
+              user: {
+                name: values.name,
+                username: values.username,
+                image: values.gambar,
+                isUsernameMade: true,
+              },
+            });
+          }
         });
     } catch {
       setError("Something went wrong!");
@@ -96,11 +97,7 @@ function AddProfile() {
       {/* tengahkan form nhya? */}
       <div className="w-full h-fit my-auto flex flex-col items-center justify-center gap-y-2 py-14">
         <h1 className="text-3xl text-center font-bold">SIGN UP</h1>
-        {status === "authenticated" && !session.user.emailVerified && (
-          <div className="w-fit h-[3rem] px-8 grid place-items-center bg-green-300 bg-opacity-50">
-            {session.user.name} is not verified!
-          </div>
-        )}
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

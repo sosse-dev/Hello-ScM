@@ -42,7 +42,7 @@ export async function POST(req: Request) {
   const hashedPassword = await bcrypt.hash(sandi, 10);
 
   const cekUser = await getUserByEmail(email);
-
+  
   if (cekUser) {
     return NextResponse.json({ error: "Email has been registered!" });
   }
@@ -62,5 +62,5 @@ export async function POST(req: Request) {
 
   await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
-  return NextResponse.json({ success: "Signed up!" });
+  return NextResponse.json({ success: "Verification email sended!" });
 };

@@ -55,20 +55,38 @@ function Login() {
     const { email, password } = validateFields.data;
 
     try {
+      fetch("/api/form/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then((res) => res.json())
+        .then(async (info) => {
+          setSukses(info?.success);
+          setError(info?.error);
+
+          if (info.error) {
+            await signIn("credentials", {
+              email: email,
+              password: password,
+              redirect: false,
+            });
+            return;
+          }
+        });
+
       const res = await signIn("credentials", {
         email: email,
         password: password,
-        redirectTo: "/",
+        redirect: false,
       });
 
       if (res?.error) {
-        setError("Something went wrong!");
-        return;
+        setError("Email or password is wrong!");
       }
 
-      if (res?.ok) {
-        toast.success("Login Success!");
-      }
     } catch (err) {
       setError("Something went wrong!");
     }
@@ -77,7 +95,7 @@ function Login() {
   return (
     <>
       <div className="w-full h-screen flex flex-col items-center justify-center gap-y-2">
-        <h1 className="text-3xl text-center font-bold">LOGIN</h1>
+        <h1 className="text-3xl text-center font-bold">Sign In Page</h1>
         {status === "authenticated" && !session.user.emailVerified && (
           <div className="w-fit h-[3rem] px-8 grid place-items-center bg-green-300 bg-opacity-50">
             {session.user.name} is not verified!
@@ -145,7 +163,7 @@ function Login() {
               className="disabled:bg-slate-500 grid place-items-center"
               disabled={loading}
             >
-              Masuk
+              Sign In
             </Button>
             <Button
               size="sm"

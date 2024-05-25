@@ -1,9 +1,17 @@
 "use client";
 import { Home, LayoutGrid, User } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 function FooterMenu() {
+  const { status } = useSession();
   const pathname = usePathname();
+
+  if (status === "unauthenticated") {
+    return null;
+  }
+
   return (
     <div
       className={`absolute bottom-0 md:right-0 ${
