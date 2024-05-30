@@ -7,6 +7,8 @@ export async function POST(
 ) {
   const comment = await req.json();
   try {
+    
+
     const data = await prisma.comment.create({
       data: {
         comment: comment as string,

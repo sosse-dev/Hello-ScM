@@ -1,4 +1,5 @@
 "use client";
+import { checkBadWord } from "@/app/actions/profanity/checkBadWord";
 import {
   QueryObserverResult,
   RefetchOptions,
@@ -7,6 +8,7 @@ import {
 import { Send } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface CommentInputProps {
   apiUrl: string;
@@ -20,11 +22,18 @@ function CommentInput({ apiUrl, userId, refetch }: CommentInputProps) {
   const pathname = usePathname();
   const postId = pathname?.slice(14, pathname.length);
   const router = useRouter();
-  
+
   const [comment, setComment] = useState("");
 
   const postFetchMessage = async ({ comment }: { comment: string }) => {
     if (comment === "") {
+      return null;
+    }
+
+    const isBadWordContained = await checkBadWord(comment);
+
+    if (isBadWordContained) {
+      toast.warning("Swear words are not allowed!");
       return null;
     }
 
@@ -58,7 +67,7 @@ function CommentInput({ apiUrl, userId, refetch }: CommentInputProps) {
   return (
     <form
       onSubmit={handleSendComment}
-      className="w-full h-16 flex gap-x-3 bg-slate-300 border-t-2 border-black px-4 shrink-0 mb-12 lg:mb-0"
+      className="w-full h-16 flex gap-x-3 bg-slate-50 border-t-2 border-black px-4 shrink-0 mb-12 lg:mb-0"
     >
       <input
         type="text"
@@ -69,9 +78,9 @@ function CommentInput({ apiUrl, userId, refetch }: CommentInputProps) {
       <button
         type="submit"
         disabled={isPending}
-        className="w-12 h-12 my-auto grid place-items-center bg-green-700 text-white rounded-full"
+        className="w-12 h-12 my-auto grid place-items-center bg-green-700 hover:bg-green-800 text-white rounded-full"
       >
-        <Send className="" />
+        <Send className="translate-y-[2px]" />
       </button>
     </form>
   );

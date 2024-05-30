@@ -7,7 +7,7 @@ import CommentInput from "./CommentInput";
 import { Comment, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Loader } from "lucide-react";
+import { Delete, Loader } from "lucide-react";
 import Loading from "../loader/Loading";
 
 type CommentWithUserProfile = Comment & {
@@ -59,12 +59,12 @@ function Comments({ apiUrl, userId }: CommentsProps) {
         {data?.data?.map((comment: CommentWithUserProfile, i: number) => {
           return (
             <div
-              key={comment.id || i}
+              key={comment.id}
               className={`max-w-[88%] w-fit px-4 h-fit min-w-[20%] ml-5 ${
                 comment.userId === userId
                   ? "self-end w-fit max-w-[88%] mr-8"
                   : ""
-              } bg-slate-300 px-3 py-2 flex justify-between items-center rounded-lg`}
+              } border-2 border-black px-3 py-2 flex justify-between items-center rounded-lg`}
             >
               <div className="flex flex-col">
                 <div className="w-fit h-fit">
@@ -99,23 +99,7 @@ function Comments({ apiUrl, userId }: CommentsProps) {
                     onClick={() => handleDelete(comment.id)}
                     className="w-6 h-6 text-red-600 rounded-lg mt-1 grid place-items-center"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-label="delete-comment"
-                      className="lucide lucide-delete w-full h-full"
-                    >
-                      <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z" />
-                      <line x1="18" x2="12" y1="9" y2="15" />
-                      <line x1="12" x2="18" y1="9" y2="15" />
-                    </svg>
+                    <Delete />
                   </button>
                 )}
               </div>

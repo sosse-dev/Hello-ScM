@@ -34,8 +34,6 @@ function EditPorfile() {
     },
   });
 
-  // TODO: NAMA GAK BERUBAH!
-
   const [error, setError] = useState("");
   const [sukses, setSukses] = useState("");
 

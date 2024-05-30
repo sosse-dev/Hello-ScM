@@ -171,7 +171,7 @@ function Login() {
               asChild
               className="p-0 font-normal"
             >
-              {/* <Link href="/auth/reset">Forget Password?</Link> */}
+              <Link href="/auth/reset">Forget Password?</Link>
             </Button>
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="flex gap-x-1">

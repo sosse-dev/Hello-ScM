@@ -78,7 +78,6 @@ const ResetPage = () => {
               </FormItem>
             )}
           />
-          {/* properly use the link inside for asChild */}
           {sukses && <FormSuccess pesan={sukses} />}
           {error && <FormError pesan={error} />}
           <div className="w-full flex flex-col items-center gap-y-4">
@@ -90,7 +89,7 @@ const ResetPage = () => {
               Send Reset Email Verification
             </Button>
             <Link className="text-sm font-normal hover:underline" href="/masuk">
-              Back to login
+              Login
             </Link>
           </div>
         </form>

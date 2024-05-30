@@ -15,7 +15,7 @@ module.exports = {
       "@react-email/render",
       "@react-email/tailwind",
     ],
-    webpackBuildWorker: true,
   },
-  reactStrictMode: false
+  reactStrictMode: false,
+  output: "standalone"
 };

@@ -6,8 +6,10 @@
 export const publicRoutes = [
     "/auth/new-verification",
     '/api/uploadthing',
-    "/report"
+    "/report",
+    "/auth/new-password"
 ]
+// TODO: Ingat public route new passwoed
 
 /**
 * Array route untuk autentikasi
@@ -19,7 +21,7 @@ export const authRoutes = [
     "/sign-up",
     "/auth/error",
     "/auth/reset",
-    "/auth/new-password"
+    // "/auth/new-password"
 ]
 
 /**

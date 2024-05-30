@@ -1,11 +1,12 @@
 "use client";
-
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { usePathname, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import qs from "query-string";
 import { SendHorizonal } from "lucide-react";
+import { checkBadWord } from "@/app/actions/profanity/checkBadWord";
+import { toast } from "sonner";
 
 interface ChatInputProps {
   socketUrlMessage: string;
@@ -31,6 +32,13 @@ export const ChatInput = ({ socketUrlMessage, senderId }: ChatInputProps) => {
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     try {
+      const isBadWordContained = await checkBadWord(value.content);
+
+      if (isBadWordContained) {
+        toast.warning("Swear words are not allowed!");
+        return null;
+      }
+
       const url = qs.stringifyUrl({
         url: socketUrlMessage,
         query: {
@@ -72,7 +80,10 @@ export const ChatInput = ({ socketUrlMessage, senderId }: ChatInputProps) => {
         disabled={loading}
         className="w-12 h-12 my-auto grid place-items-center"
       >
-        <SendHorizonal size={50} className="bg-white rounded-full p-2 hover:bg-slate-50" />
+        <SendHorizonal
+          size={50}
+          className="bg-white rounded-full p-2 hover:bg-slate-50"
+        />
       </button>
     </form>
   );

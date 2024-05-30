@@ -9,8 +9,8 @@ import ViewLoader from "@/lib/ViewLoader";
 import { Post, User, Comment } from "@prisma/client";
 import { useFetchFeed } from "@/hooks/action/useFetchFeed";
 import Loading2 from "@/components/loader/Loading2";
-import GreetingUser from "./GreetingUser";
 import HeaderFeed from "../../components/Header/HeaderFeed";
+import { Waves } from "lucide-react";
 
 type PostWithUserProfile = Post & {
   user: User;
@@ -32,7 +32,18 @@ function Feed() {
       {data?.pages?.map((firstData, index: number) => {
         if (firstData?.data.length === 0 && !isLoading) {
           return (
-            <GreetingUser index={index} name={session?.user.name as string} />
+            <div
+              key={index}
+              className="w-full h-[60vh] flex flex-col items-center justify-center mt-24"
+            >
+              <h1 className="text-2xl">Hello</h1>
+              <h2 className="text-3xl font-semibold">
+                {session?.user.name ?? "User!"}!
+              </h2>
+              <div className="w-24 h-24 p-1 bg-blue-500 grid place-items-center">
+                <Waves style={{ color: "rgb(59 130 246)" }} size={80} />
+              </div>
+            </div>
           );
         }
         return (
@@ -92,5 +103,5 @@ function Feed() {
     </div>
   );
 }
-
+// TODO: Bagian halaman depan ikon a nya kasih nama!
 export default Feed;

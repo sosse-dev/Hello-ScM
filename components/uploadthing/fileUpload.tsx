@@ -3,7 +3,7 @@ import getCroppedImg from "@/lib/getCroppedImage";
 import { useUploadThing } from "@/lib/uploadthing";
 import { Loader2, X } from "lucide-react";
 import Image from "next/image";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ImageCropDialog from "../crop/react-easy-crop";
 import { toast } from "sonner";
 
@@ -24,7 +24,7 @@ export default function FileUpload({
   const [loadingUpload, setLoadingUpload] = useState(false);
   const fileType = value?.split(".").pop();
 
-  const { startUpload, permittedFileInfo } = useUploadThing(endPoint, {
+  const { startUpload } = useUploadThing(endPoint, {
     onClientUploadComplete: (res) => {
       onChange(res?.[0].url);
       setLoadingUpload(false);
@@ -40,11 +40,9 @@ export default function FileUpload({
     },
   });
 
-  const fileTypes = permittedFileInfo?.config
-    ? Object.keys(permittedFileInfo?.config)
-    : [];
-
-  // TODO: Validasi tipe file! untuk upload gambar
+  // const fileTypes = permittedFileInfo?.config
+  //   ? Object.keys(permittedFileInfo?.config)
+  //   : [];
 
   const onCancel = () => {
     onChange("");

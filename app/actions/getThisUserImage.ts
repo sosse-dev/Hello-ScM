@@ -4,22 +4,7 @@ import getSession from "./getSession";
 export default async function getThisUser() {
   const session = await getSession();
   try {
-    if (!session?.user.email) {
-      return null;
-    }
-
-    const thisUser = await prisma.user.findUnique({
-      where: { email: session.user.email as string },
-      select: {
-        image: true,
-      },
-    });
-
-    if (!thisUser) {
-      return null;
-    }
-
-    return thisUser;
+    return session?.user.image;
   } catch (err) {
     return null;
   }

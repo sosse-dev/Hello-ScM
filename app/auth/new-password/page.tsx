@@ -47,6 +47,7 @@ const NewPasswordForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          values,
           token,
         }),
       })
@@ -65,7 +66,7 @@ const NewPasswordForm = () => {
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center gap-y-2">
-      <h1 className="text-3xl text-center font-bold">Masukan sandi baru</h1>
+      <h1 className="text-3xl text-center font-bold">Add new password</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -111,10 +112,10 @@ const NewPasswordForm = () => {
               className="disabled:bg-slate-500 grid place-items-center"
               disabled={loading}
             >
-              Atur uland sandi
+              Reset Password
             </Button>
             <Link className="text-sm font-normal hover:underline" href="/masuk">
-              kembali ke Halaman masuk
+              Login
             </Link>
           </div>
         </form>

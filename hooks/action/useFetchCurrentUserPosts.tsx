@@ -3,7 +3,6 @@ import qs from "query-string";
 import { useEffect } from "react";
 
 export const useFetchCurrentUserPosts = (userId: string) => {
-  console.log(userId, "Dari sini");
   const getThisPosts = async ({ pageParam = undefined }) => {
     try {
       const url = qs.stringifyUrl({
@@ -51,8 +50,6 @@ export const useFetchCurrentUserPosts = (userId: string) => {
       };
     }
   }, [posts]);
-
-  // TODO: YOU KNOW IT BOYSSS, Use Effect MAKE IT WORKDSSSSSS!
 
   return { posts, isLoading, fetchNextPage, isFetchingNextPage, hasNextPage };
 };

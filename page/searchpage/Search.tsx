@@ -7,6 +7,7 @@ import { useRef, useState } from "react";
 import qs from "query-string";
 import ViewLoader from "@/lib/ViewLoader";
 import { User } from "@prisma/client";
+import { Eraser } from "lucide-react";
 
 function Search() {
   const [searchInput, setSearchInput] = useState<string>("");
@@ -65,39 +66,23 @@ function Search() {
     <>
       <div
       style={{ height: "auto"}}
-        className={`w-full flex justify-center space-x-4 items-center`}
+        className="w-full flex justify-center space-x-4 items-center"
       >
         <input
           onChange={(e) => {
             setSearchInput(e.target.value), refetch();
           }}
           value={searchInput}
-          style={{width: "80%"}}
-          className="px-5 ml-4 py-4 rounded-full outline-none"
-          placeholder="search user"
+          style={{width: "60%"}}
+          className="px-5 ml-4 py-4 outline-none border-x-2 border-black"
+          placeholder="Search user"
         />
         {searchInput.length > 0 && (
           <button
             onClick={() => setSearchInput("")}
             className="w-6 h-6 sm:w-10 sm:h-10"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-label="reset"
-              className="lucide lucide-eraser w-full h-full"
-            >
-              <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21" />
-              <path d="M22 21H7" />
-              <path d="m5 11 9 9" />
-            </svg>
+            <Eraser />
           </button>
         )}
       </div>
@@ -107,7 +92,6 @@ function Search() {
             data?.pages[0]?.data?.length >= 5 ? "pt-36" : "pt-0"
           } bg-slate-100 flex flex-col justify-center hide-scrollbar hide-scrollbar::-webkit-scrollbar`}
         >
-          {/* searched user */}
           {data?.pages[0]?.data?.map((user: User, i: number) => (
             <div
               key={user?.id ?? i}
@@ -115,7 +99,6 @@ function Search() {
               className="w-full h-fit flex justify-between items-center hover:bg-slate-300 gap-x-2 cursor-pointer"
             >
               <div className="w-fit h-full flex py-2 pl-2 items-center justify-center gap-x-1">
-                {/* profile and name searched user */}
                 <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden">
                   <Image
                     src={user?.image ?? "/default-profile-picture.png"}

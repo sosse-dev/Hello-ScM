@@ -6,6 +6,8 @@ import { NextResponse } from "next/server";
 export async function PATCH(req: Request) {
   const { token } = await req.json();
   const cekToken = await getVerificationTokenByToken(token);
+  // FIXME: Jadi disni ketika di verify, lama dan muncuk eroro berkali kali sebentear
+  // TODO:  DICEK
 
   if (!cekToken) {
     return NextResponse.json({ error: "Token invalid!" });

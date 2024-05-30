@@ -13,11 +13,9 @@ const NewVerificationPage = () => {
   const [error, setError] = useState("");
   const [sukses, setSukses] = useState("");
 
-  // kenapa pakai callback?, karena pakai useeffect. cache kah?
   const onSubmit = useCallback(() => {
     setError("");
     setSukses("");
-    if (sukses || error) return;
 
     if (!token) {
       setError("There is no token!");
@@ -41,11 +39,12 @@ const NewVerificationPage = () => {
       .catch(() => {
         setError("Something went wrong!");
       });
-  }, [token, sukses, error]);
+  }, [token]);
 
   useEffect(() => {
     onSubmit();
   }, [onSubmit]);
+
   return (
     <div className="w-full h-screen grid place-items-center">
       <div className="w-fit h-fit px-6 py-3 border-2 border-slate-600 flex flex-col items-center justify-center">

@@ -33,7 +33,6 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ data, nextCursor, response: "FOUND" });
   } catch (err) {
-    console.log("Dari All Posts explore", err);
     return NextResponse.json({ error: "Internal Error", status: 500 });
   }
 }
